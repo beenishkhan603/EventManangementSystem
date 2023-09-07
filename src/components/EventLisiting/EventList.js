@@ -25,7 +25,7 @@ function EventList({ events, deleteEvent, handleEdit }) {
 										aria-label="edit"
 										onClick={() => handleEdit(event._id)}
 									>
-										<EditIcon sx={{ color: '#2EFD32' }} />
+										<EditIcon sx={{ color: '#4CBB17' }} />
 									</IconButton>{' '}
 									&nbsp;&nbsp;
 									<IconButton

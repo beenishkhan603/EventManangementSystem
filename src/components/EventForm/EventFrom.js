@@ -80,14 +80,28 @@ function EventForm({ onSubmit, event, handleChange, isEdit, handleCancel }) {
 				/>
 				<br />
 				<br />
-				<Button variant="contained" color="success" type="submit">
+				<Button
+					variant="contained"
+					sx={{
+						background: '#4CBB17',
+						'&:hover': {
+							background: '#228B22',
+						},
+					}}
+					type="submit"
+				>
 					{isEdit ? 'Save' : 'Submit'}
 				</Button>
 				&nbsp;&nbsp;
 				{isEdit ? (
 					<Button
 						variant="contained"
-						sx={{ background: '#A9A9A9' }}
+						sx={{
+							background: '#A9A9A9',
+							'&:hover': {
+								background: '#808080',
+							},
+						}}
 						onClick={() => handleCancel()}
 					>
 						Cancel
