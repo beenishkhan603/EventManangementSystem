@@ -17,47 +17,57 @@ function App() {
 	});
 	const addEvent = (eventData) => {
 		// TODO: Add event to the backend and update state
-		if (!isEdit) {
-			axios
-				.post('/', eventData)
-				.then((response) => {
-					if (response?.data) {
-						setEvents([...events, eventData]);
+		const startDate = new Date(eventData.startDate);
+		const endDate = new Date(eventData.endDate);
+
+		if (startDate >= endDate) {
+			toast.error('Start date and time must be before end date and time.');
+		} else {
+			if (!isEdit) {
+				axios
+					.post('/', eventData)
+					.then((response) => {
+						if (response?.data) {
+							setEvents([...events, eventData]);
+							setEvent({
+								title: '',
+								startDate: '',
+								endDate: '',
+								notes: '',
+							}); // Clear the selected event
+							toast.success('Event successfully added');
+						} else {
+							toast.error('Something went worng. Please try again later');
+						}
+					})
+					.catch((error) => {
+						console.log(error);
+						if (error.response.status === 400) {
+							toast.error(error?.response?.data?.error);
+						}
+					});
+			} else {
+				// If event is not null, it means we are editing an existing event
+				axios
+					.put(`/${event._id}`, eventData)
+					.then((response) => {
+						console.log('Event edited successfully:', response.data);
+						// Update the events array with the edited event
+						const updatedEvents = events.map((e) =>
+							e._id === event._id ? response.data : e
+						);
+						setEvents(updatedEvents);
 						setEvent({
 							title: '',
 							startDate: '',
 							endDate: '',
 							notes: '',
 						}); // Clear the selected event
-						toast.success('Event successfully added');
-					} else {
-						toast.error('Something went worng. Please try again later');
-					}
-				})
-				.catch((error) => {
-					console.log(error);
-				});
-		} else {
-			// If event is not null, it means we are editing an existing event
-			axios
-				.put(`/${event._id}`, eventData)
-				.then((response) => {
-					console.log('Event edited successfully:', response.data);
-					// Update the events array with the edited event
-					const updatedEvents = events.map((e) =>
-						e._id === event._id ? response.data : e
-					);
-					setEvents(updatedEvents);
-					setEvent({
-						title: '',
-						startDate: '',
-						endDate: '',
-						notes: '',
-					}); // Clear the selected event
-				})
-				.catch((error) => {
-					console.log('Error editing event:', error);
-				});
+					})
+					.catch((error) => {
+						console.log('Error editing event:', error);
+					});
+			}
 		}
 	};
 	const deleteEvent = (index, id) => {

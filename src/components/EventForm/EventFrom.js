@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Button, TextField, TextareaAutosize, Grid } from '@mui/material';
-import moment from 'moment';
 
 function EventForm({ onSubmit, event, handleChange, isEdit, handleCancel }) {
-	console.log(event);
+	const currentDateAndTime = new Date().toISOString().slice(0, 16);
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		onSubmit(event);
@@ -41,12 +40,16 @@ function EventForm({ onSubmit, event, handleChange, isEdit, handleCancel }) {
 					name="startDate"
 					value={formatToDateTimeLocal(event.startDate)}
 					onChange={handleChange}
+					min={new Date()}
 					label="Start Date/Time"
 					fullWidth
 					required
 					margin="normal"
 					InputLabelProps={{
 						shrink: true,
+					}}
+					inputProps={{
+						min: currentDateAndTime, // Set the minimum date value
 					}}
 				/>
 				<TextField
@@ -61,6 +64,9 @@ function EventForm({ onSubmit, event, handleChange, isEdit, handleCancel }) {
 					InputLabelProps={{
 						shrink: true,
 					}}
+					inputProps={{
+						min: currentDateAndTime, // Set the minimum date value
+					}}
 				/>
 				<TextareaAutosize
 					name="notes"
@@ -68,20 +74,20 @@ function EventForm({ onSubmit, event, handleChange, isEdit, handleCancel }) {
 					onChange={handleChange}
 					label="Event Notes"
 					placeholder="Event Notes"
-					fullWidth
+					sx={{ width: '100%' }}
 					minRows={3}
 					margin="normal"
 				/>
 				<br />
 				<br />
-				<Button variant="contained" color="primary" type="submit">
+				<Button variant="contained" color="success" type="submit">
 					{isEdit ? 'Save' : 'Submit'}
 				</Button>
 				&nbsp;&nbsp;
 				{isEdit ? (
 					<Button
 						variant="contained"
-						color="secondary"
+						sx={{ background: '#A9A9A9' }}
 						onClick={() => handleCancel()}
 					>
 						Cancel

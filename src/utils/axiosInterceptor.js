@@ -1,5 +1,5 @@
 import axios from 'axios';
-console.log(process.env.REACT_APP_API_URL)
+
 const ApiRequest = axios.create({
 	baseURL: process.env.REACT_APP_API_URL,
 	timeout: 100000,
@@ -8,7 +8,6 @@ const ApiRequest = axios.create({
 
 ApiRequest.interceptors.request.use(
 	function (config) {
-	
 		return config;
 	},
 	function (error) {
